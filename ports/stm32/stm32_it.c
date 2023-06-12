@@ -65,6 +65,8 @@
   ******************************************************************************
   */
 
+#define MBARI_BUILD
+
 #include <stdio.h>
 
 #include "py/obj.h"
@@ -671,12 +673,13 @@ void TIM1_CC_IRQHandler(void) {
     timer_irq_handler(1);
     IRQ_EXIT(TIM1_CC_IRQn);
 }
-
+#if !defined(MBARI_BUILD)
 void TIM2_IRQHandler(void) {
     IRQ_ENTER(TIM2_IRQn);
     timer_irq_handler(2);
     IRQ_EXIT(TIM2_IRQn);
 }
+#endif /*if !defined(MBARI_BUILD)*/
 
 #if defined(STM32G0)
 void TIM3_TIM4_IRQHandler(void) {
@@ -700,12 +703,14 @@ void TIM4_IRQHandler(void) {
 }
 #endif
 
+#if !defined(MBARI_BUILD)
 void TIM5_IRQHandler(void) {
     IRQ_ENTER(TIM5_IRQn);
     timer_irq_handler(5);
     HAL_TIM_IRQHandler(&TIM5_Handle);
     IRQ_EXIT(TIM5_IRQn);
 }
+#endif /*MBARI_BUILD*/
 
 #if defined(TIM6) // STM32F401 doesn't have TIM6
 #if defined(STM32G0)
@@ -929,7 +934,7 @@ void USART4_IRQHandler(void) {
     IRQ_EXIT(USART4_IRQn);
 }
 #endif
-
+#if !defined(MBARI_BUILD)
 #if defined(UART4)
 void UART4_IRQHandler(void) {
     IRQ_ENTER(UART4_IRQn);
@@ -937,6 +942,7 @@ void UART4_IRQHandler(void) {
     IRQ_EXIT(UART4_IRQn);
 }
 #endif
+#endif /* MBARI_BUILD */
 
 #if defined(USART5)
 void USART5_IRQHandler(void) {
