@@ -55,7 +55,27 @@ static const char fresh_boot_py[] =
 ;
 
 static const char fresh_main_py[] =
-    "# main.py -- put your code here!\r\n"
+    "# main.py --ELECIA put your code here \r\n"
+// #if defined(MBARI_BUILD)
+    "# MBARI \r\n" 
+    "import clamp\r\n"
+    "import cylinder\r\n"
+    "import flush\r\n"
+    "import nfc\r\n"
+    "import rna\r\n"
+    "import slide\r\n"
+    "import solenoid\r\n"
+    "import vacuum\r\n"
+
+    "clamp.init()\r\n"
+    "cylinder.init()\r\n"
+    "flush.init()\r\n"
+    "nfc.init()\r\n"
+    "rna.init()\r\n"
+    "slide.init()\r\n"
+    "solenoid.init()\r\n"
+    "vacuum.init()\r\n"
+//#endif /* MBARI_BUILD*/
 ;
 
 #if MICROPY_HW_ENABLE_USB
