@@ -57,14 +57,15 @@ static const char fresh_boot_py[] =
 static const char fresh_main_py[] =
     "# main.py --ELECIA put your code here \r\n"
 // #if defined(MBARI_BUILD)
-    "# MBARI \r\n" 
+    "print('not running MBARI init')\r\n"
+/*    "# MBARI \r\n" 
     "import clamp\r\n"
     "import cylinder\r\n"
     "import flush\r\n"
     "import nfc\r\n"
     "import rna\r\n"
-    "import slide\r\n"
-    "import solenoid\r\n"
+    "import arm\r\n"
+    "import actuator\r\n"
     "import vacuum\r\n"
 
     "clamp.init()\r\n"
@@ -72,9 +73,10 @@ static const char fresh_main_py[] =
     "flush.init()\r\n"
     "nfc.init()\r\n"
     "rna.init()\r\n"
-    "slide.init()\r\n"
-    "solenoid.init()\r\n"
+    "arm.init()\r\n"
+    "actuator.init()\r\n"
     "vacuum.init()\r\n"
+    */
 //#endif /* MBARI_BUILD*/
 ;
 

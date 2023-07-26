@@ -1,7 +1,7 @@
 #define MICROPY_HW_BOARD_NAME       "NUCLEO-L4A6ZG"
 #define MICROPY_HW_MCU_NAME         "STM32L4A6ZG"
 
-#define MICROPY_HW_HAS_SWITCH       (1)
+#define MICROPY_HW_HAS_SWITCH       (0)
 #define MICROPY_HW_HAS_FLASH        (1)
 #define MICROPY_HW_ENABLE_RNG       (1)
 #define MICROPY_HW_ENABLE_RTC       (1)
@@ -42,9 +42,9 @@
 // LPUART config
 #define MICROPY_HW_LPUART1_TX       (pin_G7)
 #define MICROPY_HW_LPUART1_RX       (pin_G8)
-// LPUART1 is connected to the virtual com portlon the ST-Link
+// LPUART1 is connected to the virtual com port on the ST-Link
 #define MICROPY_HW_UART_REPL        PYB_LPUART_1
-#define MICROPY_HW_UART_REPL_BAUD   115200
+#define MICROPY_HW_UART_REPL_BAUD   115200  
 
 // I2C buses
 #define MICROPY_HW_I2C1_SCL         (pin_B8)
@@ -55,11 +55,10 @@
 #define MICROPY_HW_I2C3_SDA         (pin_C1)
 
 // SPI buses
-#define MICROPY_HW_SPI1_NSS         (pin_A4)
-#define MICROPY_HW_SPI1_SCK         (pin_B3)
-#define MICROPY_HW_SPI1_MISO        (pin_B4)
-#define MICROPY_HW_SPI1_MOSI        (pin_B5)
-#define MICROPY_HW_SPI2_NSS         (pin_B12)
+#define MICROPY_HW_SPI1_NSS         (pin_A15)
+#define MICROPY_HW_SPI1_SCK         (pin_G2)
+#define MICROPY_HW_SPI1_MISO        (pin_G3)
+#define MICROPY_HW_SPI1_MOSI        (pin_G4)
 #define MICROPY_HW_SPI2_SCK         (pin_B13)
 #define MICROPY_HW_SPI2_MISO        (pin_B14)
 #define MICROPY_HW_SPI2_MOSI        (pin_B15)

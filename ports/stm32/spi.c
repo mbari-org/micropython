@@ -510,6 +510,7 @@ void spi_transfer(const spi_t *self, size_t len, const uint8_t *src, uint8_t *de
     // unknown but we sidestep the issue by using polling for 1 byte transfer.
 
     // Note: DMA transfers are limited to 65535 bytes at a time.
+    int state = disable_irq();
 
     HAL_StatusTypeDef status;
 
@@ -609,6 +610,8 @@ void spi_transfer(const spi_t *self, size_t len, const uint8_t *src, uint8_t *de
     if (status != HAL_OK) {
         mp_hal_raise(status);
     }
+    enable_irq(state);
+
 }
 
 void spi_print(const mp_print_t *print, const spi_t *spi_obj, bool legacy) {
