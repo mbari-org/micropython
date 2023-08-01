@@ -690,13 +690,13 @@ void TIM3_TIM4_IRQHandler(void) {
 }
 
 #else
+#if !defined(MBARI_BUILD)
 void TIM3_IRQHandler(void) {
     IRQ_ENTER(TIM3_IRQn);
     timer_irq_handler(3);
     IRQ_EXIT(TIM3_IRQn);
 }
 
-#if !defined(MBARI_BUILD)
 void TIM4_IRQHandler(void) {
     IRQ_ENTER(TIM4_IRQn);
     timer_irq_handler(4);
