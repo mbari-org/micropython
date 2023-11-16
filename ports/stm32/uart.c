@@ -1086,7 +1086,7 @@ size_t uart_tx_data(pyb_uart_obj_t *self, const void *src_in, size_t num_chars, 
 
     // wait for the UART frame to complete
     if (!uart_wait_flag_set(self, UART_FLAG_TC, timeout)) {
-        *errcode = MP_ETIMEDOUT;
+        *errcode = MP_ETIMEDOUT+1;
         return num_tx;
     }
 
