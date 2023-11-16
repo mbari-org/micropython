@@ -99,6 +99,22 @@ STATIC pyb_uart_obj_t pyb_uart_repl_obj;
 STATIC uint8_t pyb_uart_repl_rxbuf[MICROPY_HW_UART_REPL_RXBUF];
 #endif
 
+#if defined(MICROPY_HW_UART_REPL)
+void init_uart_repl() 
+{
+    // Set up a UART REPL using a statically allocated object
+    pyb_uart_repl_obj.base.type = &pyb_uart_type;
+    pyb_uart_repl_obj.uart_id = MICROPY_HW_UART_REPL;
+    pyb_uart_repl_obj.is_static = true;
+    pyb_uart_repl_obj.timeout = 0;
+    pyb_uart_repl_obj.timeout_char = 3;
+    uart_init(&pyb_uart_repl_obj, MICROPY_HW_UART_REPL_BAUD, UART_WORDLENGTH_8B, UART_PARITY_NONE, UART_STOPBITS_1, 0);
+    uart_set_rxbuf(&pyb_uart_repl_obj, sizeof(pyb_uart_repl_rxbuf), pyb_uart_repl_rxbuf);
+    uart_attach_to_repl(&pyb_uart_repl_obj, true);
+    MP_STATE_PORT(pyb_uart_obj_all)[MICROPY_HW_UART_REPL - 1] = &pyb_uart_repl_obj;
+}
+#endif
+
 void nlr_jump_fail(void *val) {
     printf("FATAL: uncaught exception %p\n", val);
     mp_obj_print_exception(&mp_plat_print, MP_OBJ_FROM_PTR(val));
@@ -447,16 +463,7 @@ void stm32_main(uint32_t reset_mode) {
     #endif
 
     #if defined(MICROPY_HW_UART_REPL)
-    // Set up a UART REPL using a statically allocated object
-    pyb_uart_repl_obj.base.type = &pyb_uart_type;
-    pyb_uart_repl_obj.uart_id = MICROPY_HW_UART_REPL;
-    pyb_uart_repl_obj.is_static = true;
-    pyb_uart_repl_obj.timeout = 0;
-    pyb_uart_repl_obj.timeout_char = 2;
-    uart_init(&pyb_uart_repl_obj, MICROPY_HW_UART_REPL_BAUD, UART_WORDLENGTH_8B, UART_PARITY_NONE, UART_STOPBITS_1, 0);
-    uart_set_rxbuf(&pyb_uart_repl_obj, sizeof(pyb_uart_repl_rxbuf), pyb_uart_repl_rxbuf);
-    uart_attach_to_repl(&pyb_uart_repl_obj, true);
-    MP_STATE_PORT(pyb_uart_obj_all)[MICROPY_HW_UART_REPL - 1] = &pyb_uart_repl_obj;
+    init_uart_repl();
     #endif
 
     boardctrl_state_t state;
