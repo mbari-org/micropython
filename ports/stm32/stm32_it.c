@@ -481,8 +481,9 @@ void EXTI4_IRQHandler(void) {
     IRQ_EXIT(EXTI4_IRQn);
 }
 
+#if !defined(MBARI_BUILD)
 void EXTI9_5_IRQHandler(void) {
-    IRQ_ENTER(EXTI9_5_IRQn);
+    IRQ_ENTER(EXTI9_5_IRQn);    
     Handle_EXTI_Irq(5);
     Handle_EXTI_Irq(6);
     Handle_EXTI_Irq(7);
@@ -490,6 +491,7 @@ void EXTI9_5_IRQHandler(void) {
     Handle_EXTI_Irq(9);
     IRQ_EXIT(EXTI9_5_IRQn);
 }
+#endif // MBARI_BUILD
 
 void EXTI15_10_IRQHandler(void) {
     IRQ_ENTER(EXTI15_10_IRQn);
@@ -679,6 +681,12 @@ void TIM2_IRQHandler(void) {
     timer_irq_handler(2);
     IRQ_EXIT(TIM2_IRQn);
 }
+void TIM3_IRQHandler(void) {
+    IRQ_ENTER(TIM3_IRQn);
+    timer_irq_handler(3);
+    IRQ_EXIT(TIM3_IRQn);
+}
+
 #endif /*if !defined(MBARI_BUILD)*/
 
 #if defined(STM32G0)
@@ -690,19 +698,12 @@ void TIM3_TIM4_IRQHandler(void) {
 }
 
 #else
-#if !defined(MBARI_BUILD)
-void TIM3_IRQHandler(void) {
-    IRQ_ENTER(TIM3_IRQn);
-    timer_irq_handler(3);
-    IRQ_EXIT(TIM3_IRQn);
-}
 
 void TIM4_IRQHandler(void) {
     IRQ_ENTER(TIM4_IRQn);
     timer_irq_handler(4);
     IRQ_EXIT(TIM4_IRQn);
 }
-#endif /*MBARI_BUILD*/
 #endif
 
 #if !defined(MBARI_BUILD)

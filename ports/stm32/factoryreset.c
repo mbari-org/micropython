@@ -55,31 +55,10 @@ static const char fresh_boot_py[] =
 ;
 
 static const char fresh_main_py[] =
-    "# main.py --ELECIA put your code here \r\n"
-// #if defined(MBARI_BUILD)
-    "print('not running MBARI init')\r\n"
-/*    "# MBARI \r\n" 
-    "import clamp\r\n"
-    "import cylinder\r\n"
-    "import flush\r\n"
-    "import nfc\r\n"
-    "import rna\r\n"
-    "import arm\r\n"
-    "import actuator\r\n"
-    "import vacuum\r\n"
-
-    "clamp.init()\r\n"
-    "cylinder.init()\r\n"
-    "flush.init()\r\n"
-    "nfc.init()\r\n"
-    "rna.init()\r\n"
-    "arm.init()\r\n"
-    "actuator.init()\r\n"
-    "vacuum.init()\r\n"
-    */
-//#endif /* MBARI_BUILD*/
+    "# main.py -- put your code here \r\n"
+    "print('VERSION: 0.0.0')\r\n"
+    "print('NOTE: Not running MBARI init')\r\n"
 ;
-
 #if MICROPY_HW_ENABLE_USB
 static const char fresh_pybcdc_inf[] =
 #include "genhdr/pybcdc_inf.h"
