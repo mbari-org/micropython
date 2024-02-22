@@ -1094,14 +1094,9 @@ size_t uart_tx_data(pyb_uart_obj_t *self, const void *src_in, size_t num_chars, 
     return num_tx;
 }
 
-extern void uart_tx_strn_ErrorCallback(int errcode);
-
 void uart_tx_strn(pyb_uart_obj_t *uart_obj, const char *str, uint len) {
     int errcode;
     uart_tx_data(uart_obj, str, len, &errcode);
-    if (errcode != 0) {
-        uart_tx_strn_ErrorCallback(errcode);
-    }
 }
 
 // This IRQ handler is set up to handle RXNE, IDLE and ORE interrupts only.
