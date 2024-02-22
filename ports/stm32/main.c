@@ -102,6 +102,10 @@ STATIC uint8_t pyb_uart_repl_rxbuf[MICROPY_HW_UART_REPL_RXBUF];
 #if defined(MICROPY_HW_UART_REPL)
 void init_uart_repl() 
 {
+	__HAL_RCC_GPIOG_CLK_ENABLE();
+    __HAL_RCC_LPUART1_CLK_ENABLE();
+    HAL_PWREx_EnableVddIO2();
+
     // Set up a UART REPL using a statically allocated object
     pyb_uart_repl_obj.base.type = &pyb_uart_type;
     pyb_uart_repl_obj.uart_id = MICROPY_HW_UART_REPL;
