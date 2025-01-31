@@ -686,7 +686,11 @@ void TIM3_IRQHandler(void) {
     timer_irq_handler(3);
     IRQ_EXIT(TIM3_IRQn);
 }
-
+void TIM4_IRQHandler(void) {
+    IRQ_ENTER(TIM4_IRQn);
+    timer_irq_handler(4);
+    IRQ_EXIT(TIM4_IRQn);
+}
 #endif /*if !defined(MBARI_BUILD)*/
 
 #if defined(STM32G0)
@@ -697,13 +701,14 @@ void TIM3_TIM4_IRQHandler(void) {
     IRQ_EXIT(TIM3_TIM4_IRQn);
 }
 
-#else
+#elseif !defined(MBARI_BUILD)
 
 void TIM4_IRQHandler(void) {
     IRQ_ENTER(TIM4_IRQn);
     timer_irq_handler(4);
     IRQ_EXIT(TIM4_IRQn);
 }
+
 #endif
 
 #if !defined(MBARI_BUILD)
