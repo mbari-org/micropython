@@ -65,6 +65,8 @@
   ******************************************************************************
   */
 
+#define MBARI_BUILD
+
 #include <stdio.h>
 
 #include "py/obj.h"
@@ -304,14 +306,6 @@ void USB_UCPD1_2_IRQHandler(void) {
 }
 #endif
 
-#elif defined(STM32H5)
-
-#if MICROPY_HW_USB_FS
-void USB_DRD_FS_IRQHandler(void) {
-    HAL_PCD_IRQHandler(&pcd_fs_handle);
-}
-#endif
-
 #elif defined(STM32L0) || defined(STM32L432xx)
 
 #if MICROPY_HW_USB_FS
@@ -320,7 +314,7 @@ void USB_IRQHandler(void) {
 }
 #endif
 
-#elif defined(STM32G4) || defined(STM32L1) || defined(STM32WB)
+#elif defined(STM32G4) || defined(STM32WB)
 
 #if MICROPY_HW_USB_FS
 void USB_LP_IRQHandler(void) {
@@ -412,7 +406,7 @@ void OTG_FS_WKUP_IRQHandler(void) {
 
     #if defined(STM32L4)
     EXTI->PR1 = USB_OTG_FS_WAKEUP_EXTI_LINE;
-    #elif !defined(STM32H5) && !defined(STM32H7)
+    #elif !defined(STM32H7)
     /* Clear EXTI pending Bit*/
     __HAL_USB_FS_EXTI_CLEAR_FLAG();
     #endif
@@ -432,7 +426,7 @@ void OTG_HS_WKUP_IRQHandler(void) {
 
     OTG_CMD_WKUP_Handler(&pcd_hs_handle);
 
-    #if !defined(STM32H5) && !defined(STM32H7)
+    #if !defined(STM32H7)
     /* Clear EXTI pending Bit*/
     __HAL_USB_HS_EXTI_CLEAR_FLAG();
     #endif
@@ -487,8 +481,9 @@ void EXTI4_IRQHandler(void) {
     IRQ_EXIT(EXTI4_IRQn);
 }
 
+#if !defined(MBARI_BUILD)
 void EXTI9_5_IRQHandler(void) {
-    IRQ_ENTER(EXTI9_5_IRQn);
+    IRQ_ENTER(EXTI9_5_IRQn);    
     Handle_EXTI_Irq(5);
     Handle_EXTI_Irq(6);
     Handle_EXTI_Irq(7);
@@ -496,6 +491,7 @@ void EXTI9_5_IRQHandler(void) {
     Handle_EXTI_Irq(9);
     IRQ_EXIT(EXTI9_5_IRQn);
 }
+#endif // MBARI_BUILD
 
 void EXTI15_10_IRQHandler(void) {
     IRQ_ENTER(EXTI15_10_IRQn);
@@ -536,13 +532,7 @@ void ETH_WKUP_IRQHandler(void) {
 }
 #endif
 
-#if defined(STM32H5)
-void TAMP_IRQHandler(void) {
-    IRQ_ENTER(TAMP_IRQn);
-    Handle_EXTI_Irq(EXTI_RTC_TAMP);
-    IRQ_EXIT(TAMP_IRQn);
-}
-#elif defined(STM32L1)
+#if defined(STM32L1)
 void TAMPER_STAMP_IRQHandler(void) {
     IRQ_ENTER(TAMPER_STAMP_IRQn);
     Handle_EXTI_Irq(EXTI_RTC_TIMESTAMP);
@@ -556,17 +546,10 @@ void TAMP_STAMP_IRQHandler(void) {
 }
 #endif
 
-#if defined(STM32H5)
-void RTC_IRQHandler(void)
-#else
-void RTC_WKUP_IRQHandler(void)
-#endif
-{
+void RTC_WKUP_IRQHandler(void) {
     IRQ_ENTER(RTC_WKUP_IRQn);
     #if defined(STM32G0) || defined(STM32G4) || defined(STM32WL)
     RTC->MISR &= ~RTC_MISR_WUTMF; // clear wakeup interrupt flag
-    #elif defined(STM32H5)
-    RTC->SCR = RTC_SCR_CWUTF; // clear wakeup interrupt flag
     #elif defined(STM32H7A3xx) || defined(STM32H7A3xxQ) || defined(STM32H7B3xx) || defined(STM32H7B3xxQ)
     RTC->SR &= ~RTC_SR_WUTF; // clear wakeup interrupt flag
     #else
@@ -692,12 +675,23 @@ void TIM1_CC_IRQHandler(void) {
     timer_irq_handler(1);
     IRQ_EXIT(TIM1_CC_IRQn);
 }
-
+#if !defined(MBARI_BUILD)
 void TIM2_IRQHandler(void) {
     IRQ_ENTER(TIM2_IRQn);
     timer_irq_handler(2);
     IRQ_EXIT(TIM2_IRQn);
 }
+void TIM3_IRQHandler(void) {
+    IRQ_ENTER(TIM3_IRQn);
+    timer_irq_handler(3);
+    IRQ_EXIT(TIM3_IRQn);
+}
+void TIM4_IRQHandler(void) {
+    IRQ_ENTER(TIM4_IRQn);
+    timer_irq_handler(4);
+    IRQ_EXIT(TIM4_IRQn);
+}
+#endif /*if !defined(MBARI_BUILD)*/
 
 #if defined(STM32G0)
 void TIM3_TIM4_IRQHandler(void) {
@@ -707,26 +701,24 @@ void TIM3_TIM4_IRQHandler(void) {
     IRQ_EXIT(TIM3_TIM4_IRQn);
 }
 
-#else
-void TIM3_IRQHandler(void) {
-    IRQ_ENTER(TIM3_IRQn);
-    timer_irq_handler(3);
-    IRQ_EXIT(TIM3_IRQn);
-}
+#elseif !defined(MBARI_BUILD)
 
 void TIM4_IRQHandler(void) {
     IRQ_ENTER(TIM4_IRQn);
     timer_irq_handler(4);
     IRQ_EXIT(TIM4_IRQn);
 }
+
 #endif
 
+#if !defined(MBARI_BUILD)
 void TIM5_IRQHandler(void) {
     IRQ_ENTER(TIM5_IRQn);
     timer_irq_handler(5);
     HAL_TIM_IRQHandler(&TIM5_Handle);
     IRQ_EXIT(TIM5_IRQn);
 }
+#endif /*MBARI_BUILD*/
 
 #if defined(TIM6) // STM32F401 doesn't have TIM6
 #if defined(STM32G0)
@@ -950,7 +942,7 @@ void USART4_IRQHandler(void) {
     IRQ_EXIT(USART4_IRQn);
 }
 #endif
-
+#if !defined(MBARI_BUILD)
 #if defined(UART4)
 void UART4_IRQHandler(void) {
     IRQ_ENTER(UART4_IRQn);
@@ -958,6 +950,7 @@ void UART4_IRQHandler(void) {
     IRQ_EXIT(UART4_IRQn);
 }
 #endif
+#endif /* MBARI_BUILD */
 
 #if defined(USART5)
 void USART5_IRQHandler(void) {
